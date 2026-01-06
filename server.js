@@ -1,69 +1,67 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import menuRoutes from "./routes/menu.js";
+let lastUpdateId = 0;
 
-dotenv.config();
+setInterval(async () => {
+  try {
+    const res = await fetch(
+      `${TELEGRAM_API}/getUpdates?offset=${lastUpdateId + 1}`
+    );
+    const data = await res.json();
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+    if (!data.result || data.result.length === 0) return;
 
-app.use(cors());
-app.use(express.json());
+    for (const update of data.result) {
+      lastUpdateId = update.update_id;
 
-// TEST endpoint
-app.get("/", (req, res) => {
-  res.json({
-    status: "OK",
-    message: "Raviosta backend ishlayapti 🚀"
-  });
-});
+      const message = update.message;
+      if (!message) continue;
 
-app.use("/api/menu", menuRoutes);
-
-// Telegram webhook (keyin to‘ldiramiz)
-app.post("/telegram/webhook", (req, res) => {
-  console.log("Telegram update:", req.body);
-  res.sendStatus(200);
-});
-
-// Mini App test
-app.get("/api/test", (req, res) => {
-  res.json({
-    success: true,
-    time: new Date()
-  });
-});
-
-app.listen(PORT, () => {
-  console.log(`✅ Server ishga tushdi: http://localhost:${PORT}`);
-});
-
-app.post("/telegram/webhook", (req, res) => {
-  console.log("BUYURTMA KELDI:", req.body);
-  res.sendStatus(200);
-});
-
-const message = update.message;
-// oddiy /start javobi
-if (message?.text === "/start") {
-  await fetch(`${TELEGRAM_API}/sendMessage`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      chat_id: message.chat.id,
-      text: "🍕 Raviosta bot ishlayapti!\nBuyurtma berish uchun Mini App’ni oching 👇",
-      reply_markup: {
-        keyboard: [
-          [
-            {
-              text: "📲 Buyurtma berish",
-              web_app: { url: "https://YOUR_MINIAPP_URL" }
+      // /start komandasi
+      if (message.text === "/start") {
+        await fetch(`${TELEGRAM_API}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: message.chat.id,
+            text:
+              "🍕 Raviosta bot ishga tushdi!\n" +
+              "Buyurtma berish uchun tugmani bosing 👇",
+            reply_markup: {
+              keyboard: [
+                [
+                  {
+                    text: "📲 Buyurtma berish",
+                    web_app: {
+                      url: "https://RAVIosta-miniapp.netlify.app"
+                    }
+                  }
+                ]
+              ],
+              resize_keyboard: true
             }
-          ]
-        ],
-        resize_keyboard: true
+          })
+        });
       }
-    })
-  });
-}
+
+      // Mini App’dan buyurtma
+      if (message.web_app_data?.data) {
+        const payload = JSON.parse(message.web_app_data.data);
+
+        console.log("📦 BUYURTMA KELDI:", payload);
+
+        const result = await createIikoOrder(payload.order);
+        console.log("🍽 IIKO ORDER:", result);
+
+        await fetch(`${TELEGRAM_API}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: message.chat.id,
+            text: "✅ Buyurtma oshxonaga yuborildi"
+          })
+        });
+      }
+    }
+  } catch (err) {
+    console.error("Telegram polling error:", err.message);
+  }
+}, 3000);
