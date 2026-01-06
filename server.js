@@ -31,7 +31,7 @@ setInterval(async () => {
                   {
                     text: "📲 Buyurtma berish",
                     web_app: {
-                      url: "https://RAVIosta-miniapp.netlify.app"
+                      url: "https://clymat-star.github.io/raviosta-miniapp/"
                     }
                   }
                 ]
@@ -65,3 +65,4 @@ setInterval(async () => {
     console.error("Telegram polling error:", err.message);
   }
 }, 3000);
+
