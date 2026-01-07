@@ -1,8 +1,3 @@
-import fetch from "node-fetch";
-import { getIikoToken } from "./iikoAuth.js";
-
-export async function createIikoOrder(items) {
-  import fetch from "node-fetch";
 import { getIikoToken } from "./iikoAuth.js";
 
 export async function createIikoOrder(items) {
@@ -21,7 +16,7 @@ export async function createIikoOrder(items) {
     organizationId: process.env.ORG_ID,
     terminalGroupId: process.env.TERMINAL_GROUP_ID,
     order: {
-      orderType: "Delivery", // 🔴 MUHIM
+      orderType: "Delivery",
       items: items.map(i => ({
         productId: i.id,
         amount: i.qty
@@ -57,10 +52,3 @@ export async function createIikoOrder(items) {
 
   return data;
 }
-
-
-  return await res.json();
-}
-
-
-
