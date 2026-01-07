@@ -41,8 +41,9 @@ export async function getMenu() {
       name: p.name,
       category: groupMap[p.groupId] || "Boshqa",
       price: p.sizePrices[0].price,
-      image: p.imageLinks?.[0] || null
+      image: p.imageLinks?.[0]?.imageUrl || null
     }));
 
   return menu;
 }
+
