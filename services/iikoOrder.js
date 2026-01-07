@@ -25,10 +25,7 @@ export async function createIikoOrder(items) {
           paymentTypeKind: "Cash",
           sum: total
         }
-      ],
-      customer: {
-        name: "Telegram user"
-      }
+      ]
     }
   };
 
