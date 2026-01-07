@@ -16,7 +16,6 @@ export async function createIikoOrder(items) {
     organizationId: process.env.ORG_ID,
     terminalGroupId: process.env.TERMINAL_GROUP_ID,
     order: {
-      orderType: "Delivery",
       items: items.map(i => ({
         productId: i.id,
         amount: i.qty
