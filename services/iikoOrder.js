@@ -4,6 +4,11 @@ import { getIikoToken } from "./iikoAuth.js";
 export async function createIikoOrder(items) {
   const token = await getIikoToken(process.env.IIKO_API_LOGIN);
 
+  let total = 0;
+  items.forEach(i => {
+    total += Number(i.price) * i.qty;
+  });
+
   const body = {
     organizationId: process.env.ORG_ID,
     terminalGroupId: process.env.TERMINAL_GROUP_ID,
@@ -15,7 +20,7 @@ export async function createIikoOrder(items) {
       payments: [
         {
           paymentTypeKind: "Cash",
-          sum: 0
+          sum: total
         }
       ]
     }
@@ -35,3 +40,5 @@ export async function createIikoOrder(items) {
 
   return await res.json();
 }
+
+
