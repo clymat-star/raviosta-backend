@@ -7,11 +7,13 @@ export async function createIikoOrder(items) {
     throw new Error("IIKO TOKEN YO‘Q");
   }
 
+  // 🔹 Jami summa hisoblaymiz
   let total = 0;
   items.forEach(i => {
     total += Number(i.price) * i.qty;
   });
 
+  // 🔹 IIKO order body (MINIMAL & SAFE)
   const body = {
     organizationId: process.env.ORG_ID,
     terminalGroupId: process.env.TERMINAL_GROUP_ID,
@@ -29,6 +31,7 @@ export async function createIikoOrder(items) {
     }
   };
 
+  // 🔎 Debug uchun (Render logs)
   console.log("IIKO ORDER BODY:", JSON.stringify(body, null, 2));
 
   const res = await fetch(
@@ -44,6 +47,7 @@ export async function createIikoOrder(items) {
   );
 
   const data = await res.json();
+
   console.log("IIKO RESPONSE:", data);
 
   return data;
