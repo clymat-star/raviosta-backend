@@ -10,7 +10,7 @@ export async function createIikoDelivery(items) {
     order: {
       phone: "+998900000000",
 
-      // 🔴 ENUM — faqat STRING
+      // 🔴 QAT’IY STRING
       orderServiceType: "DeliveryByCourier",
 
       deliveryPoint: {
@@ -28,7 +28,8 @@ export async function createIikoDelivery(items) {
     }
   };
 
-  console.log("IIKO DELIVERY BODY:", JSON.stringify(body, null, 2));
+  // 🔥 MUHIM DEBUG
+  console.log("FINAL DELIVERY BODY:", JSON.stringify(body, null, 2));
 
   const res = await fetch(
     "https://api-ru.iiko.services/api/1/deliveries/create",
@@ -42,7 +43,8 @@ export async function createIikoDelivery(items) {
     }
   );
 
-  const data = await res.json();
-  console.log("IIKO DELIVERY RESPONSE:", data);
-  return data;
+  const text = await res.text();
+  console.log("RAW IIKO RESPONSE:", text);
+
+  return JSON.parse(text);
 }
