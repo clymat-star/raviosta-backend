@@ -7,7 +7,6 @@ export async function createIikoDelivery(items) {
     throw new Error("IIKO TOKEN YO‘Q");
   }
 
-  // 🔹 Jami summa
   let total = 0;
   items.forEach(i => {
     total += Number(i.price) * i.qty;
@@ -18,8 +17,15 @@ export async function createIikoDelivery(items) {
     terminalGroupId: process.env.TERMINAL_GROUP_ID,
 
     order: {
-      phone: "+998000000000", // vaqtinchalik
+      phone: "+998900000000",
       orderServiceType: "DeliveryByCourier",
+
+      deliveryPoint: {
+        address: {
+          street: "Test ko‘cha",
+          house: "1"
+        }
+      },
 
       items: items.map(i => ({
         productId: i.id,
