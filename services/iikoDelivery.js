@@ -7,23 +7,16 @@ export async function createIikoDelivery(items) {
   const body = {
     organizationId: process.env.ORG_ID,
     terminalGroupId: process.env.TERMINAL_GROUP_ID,
-
     order: {
       phone: "+998900000000",
 
-      // 🔴 MUHIM: orderServiceType OBJECT bo‘lishi shart
-      orderServiceType: {
-        code: "DeliveryByCourier"
-      },
+      // 🔴 ENUM — faqat STRING
+      orderServiceType: "DeliveryByCourier",
 
       deliveryPoint: {
         address: {
-          city: {
-            name: "Tashkent"
-          },
-          street: {
-            name: "Test ko‘cha"
-          },
+          city: { name: "Tashkent" },
+          street: { name: "Test ko‘cha" },
           house: "1"
         }
       },
@@ -51,6 +44,5 @@ export async function createIikoDelivery(items) {
 
   const data = await res.json();
   console.log("IIKO DELIVERY RESPONSE:", data);
-
   return data;
 }
