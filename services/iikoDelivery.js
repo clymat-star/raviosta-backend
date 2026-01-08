@@ -22,7 +22,9 @@ export async function createIikoDelivery(items) {
 
       deliveryPoint: {
         address: {
-          street: "Test ko‘cha",
+          street: {
+            name: "Test ko‘cha"
+          },
           house: "1"
         }
       },
