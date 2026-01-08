@@ -8,11 +8,10 @@ export async function createIikoDelivery(items) {
     organizationId: process.env.ORG_ID,
     terminalGroupId: process.env.TERMINAL_GROUP_ID,
     order: {
-      phone: {
-        number: "+998900000000"
-      },
+      // 🔴 STRING BO‘LADI
+      phone: "+998900000000",
 
-      // 🔴 QAT’IY STRING
+      // 🔴 STRING (ENUM)
       orderServiceType: "DeliveryByCourier",
 
       deliveryPoint: {
@@ -30,7 +29,6 @@ export async function createIikoDelivery(items) {
     }
   };
 
-  // 🔥 MUHIM DEBUG
   console.log("FINAL DELIVERY BODY:", JSON.stringify(body, null, 2));
 
   const res = await fetch(
