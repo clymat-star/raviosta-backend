@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import fetch from "node-fetch";
 
 import menuRoutes from "./routes/menu.js";
-import { createIikoOrder } from "./services/iikoOrder.js";
+import { createIikoDelivery } from "./services/iikoDelivery.js";
 
 /* =========================
    ENV
@@ -100,7 +100,7 @@ setInterval(async () => {
         console.log("📦 BUYURTMA KELDI:", payload);
 
         try {
-          const result = await createIikoOrder(payload.order);
+          const result = await createIikoDelivery(payload.order);
           console.log("🍽 IIKO ORDER:", result);
 
           await fetch(`${TELEGRAM_API}/sendMessage`, {
@@ -136,3 +136,4 @@ setInterval(async () => {
 app.listen(PORT, () => {
   console.log(`✅ Server ishga tushdi: http://localhost:${PORT}`);
 });
+
