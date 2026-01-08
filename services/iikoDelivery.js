@@ -2,15 +2,7 @@ import { getIikoToken } from "./iikoAuth.js";
 
 export async function createIikoDelivery(items) {
   const token = await getIikoToken(process.env.IIKO_API_LOGIN);
-
-  if (!token) {
-    throw new Error("IIKO TOKEN YO‘Q");
-  }
-
-  let total = 0;
-  items.forEach(i => {
-    total += Number(i.price) * i.qty;
-  });
+  if (!token) throw new Error("IIKO TOKEN YO‘Q");
 
   const body = {
     organizationId: process.env.ORG_ID,
@@ -32,14 +24,7 @@ export async function createIikoDelivery(items) {
       items: items.map(i => ({
         productId: i.id,
         amount: i.qty
-      })),
-
-      payments: [
-        {
-          paymentTypeKind: "Cash",
-          sum: total
-        }
-      ]
+      }))
     }
   };
 
@@ -59,6 +44,5 @@ export async function createIikoDelivery(items) {
 
   const data = await res.json();
   console.log("IIKO DELIVERY RESPONSE:", data);
-
   return data;
 }
