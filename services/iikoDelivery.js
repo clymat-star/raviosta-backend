@@ -10,10 +10,17 @@ export async function createIikoDelivery(items) {
 
     order: {
       phone: "+998900000000",
-      orderServiceType: "DeliveryByCourier",
+
+      // 🔴 MUHIM: orderServiceType OBJECT bo‘lishi shart
+      orderServiceType: {
+        code: "DeliveryByCourier"
+      },
 
       deliveryPoint: {
         address: {
+          city: {
+            name: "Tashkent"
+          },
           street: {
             name: "Test ko‘cha"
           },
@@ -44,5 +51,6 @@ export async function createIikoDelivery(items) {
 
   const data = await res.json();
   console.log("IIKO DELIVERY RESPONSE:", data);
+
   return data;
 }
