@@ -8,7 +8,9 @@ export async function createIikoDelivery(items) {
     organizationId: process.env.ORG_ID,
     terminalGroupId: process.env.TERMINAL_GROUP_ID,
     order: {
-      phone: "+998900000000",
+      phone: {
+        number: "+998900000000"
+      },
 
       // 🔴 QAT’IY STRING
       orderServiceType: "DeliveryByCourier",
